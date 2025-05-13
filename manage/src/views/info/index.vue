@@ -159,13 +159,18 @@ const updateInfoDetail = async () => {
   display: flex;
   justify-content: center;
   .avatar {
+    width: 100%;
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 24px;
     .img {
       width: 240px;
       height: 240px;
       border-radius: 50%;
+    }
+    .n-upload {
+      text-align: center;
     }
   }
 }

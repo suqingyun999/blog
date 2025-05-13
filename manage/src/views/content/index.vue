@@ -3,14 +3,17 @@
     <n-button type="primary" style="margin-bottom: 12px" @click="onCreate">
       新增
     </n-button>
-    <n-data-table
-      :columns="columns"
-      :data="data"
-      :pagination="pagination"
-      :bordered="false"
-      @update:page="changePage"
-      @update:page-size="changePageSize"
-    />
+    <n-data-table :columns="columns" :data="data" :bordered="false" />
+    <div class="pagination">
+      <n-pagination
+        v-model:page="page.current"
+        show-size-picker
+        :page-sizes="[10, 20, 50, 100]"
+        :item-count="page.total"
+        @update:page="changePage"
+        @update:page-size="changePageSize"
+      />
+    </div>
   </div>
 </template>
 
@@ -91,13 +94,9 @@ const columns = createColumns({
 const page = ref({
   current: 1,
   pageSize: 10,
+  total: 0,
 })
 
-const pagination = ref({
-  pageSize: 10,
-  showSizePicker: true,
-  pageSizes: [10, 20, 50, 100],
-})
 const data = ref([])
 
 const onCreate = () => {
@@ -118,7 +117,7 @@ const getContentListData = async () => {
           datetime: item.datetime,
         }
       })
-      console.log(data.value)
+      page.value = res.data.page
     } else {
       message.error('获取失败')
     }
@@ -161,5 +160,11 @@ const changePageSize = (pageSize) => {
   width: 100%;
   min-height: calc(100vh - 56px);
   padding: 24px;
+
+  .pagination {
+    padding: 16px 0;
+    display: flex;
+    justify-content: flex-end;
+  }
 }
 </style>

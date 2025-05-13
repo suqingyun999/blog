@@ -3,14 +3,17 @@
     <n-button type="primary" style="margin-bottom: 12px" @click="onCreate">
       新增
     </n-button>
-    <n-data-table
-      :columns="columns"
-      :data="data"
-      :pagination="pagination"
-      :bordered="false"
-       @update:page="changePage"
-      @update:page-size="changePageSize"
-    />
+    <n-data-table :columns="columns" :data="data" :bordered="false" />
+    <div class="pagination">
+      <n-pagination
+        v-model:page="page.current"
+        show-size-picker
+        :page-sizes="[10, 20, 50, 100]"
+        :item-count="page.total"
+        @update:page="changePage"
+        @update:page-size="changePageSize"
+      />
+    </div>
   </div>
 </template>
 
@@ -21,6 +24,7 @@ import { useRouter } from 'vue-router'
 import { getMessageList, delMessageList } from '../../api/index.js'
 const message = useMessage()
 const $router = useRouter()
+
 function createColumns({ update }) {
   return [
     {
@@ -94,12 +98,7 @@ const columns = createColumns({
 const page = ref({
   current: 1,
   pageSize: 10,
-})
-
-const pagination = ref({
-  pageSize: 10,
-  showSizePicker: true,
-  pageSizes: [10, 20, 50, 100],
+  total: 0,
 })
 
 const data = ref([])
@@ -112,18 +111,19 @@ const onCreate = () => {
 const getMessageListData = async () => {
   try {
     const res = await getMessageList({
-      page: { current: 1, pageSize: 10 },
+      page: page.value,
     })
     if (res.status == '1') {
       data.value = res.data.data.map((item) => {
         return {
+          key: item.id,
           id: item.id,
           name: item.name,
           datetime: item.datetime,
           message: item.msg,
         }
       })
-      console.log(data.value)
+      page.value = res.data.page
     } else {
       message.error('获取失败')
     }
@@ -167,5 +167,11 @@ const changePageSize = (pageSize) => {
   width: 100%;
   min-height: calc(100vh - 56px);
   padding: 24px;
+
+  .pagination {
+    padding: 16px 0;
+    display: flex;
+    justify-content: flex-end;
+  }
 }
 </style>

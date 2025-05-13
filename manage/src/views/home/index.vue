@@ -1,5 +1,8 @@
 <template>
   <div class="home">
+    <div class="btn">
+      <n-button type="primary" @click="onSubmit">提交</n-button>
+    </div>
     <n-card title="图片">
       <img class="img" alt="" :src="baseUrl + model.image" />
       <n-upload
@@ -13,18 +16,14 @@
       </n-upload>
     </n-card>
     <n-card title="文字">
-      <div class="text">
         <n-input
           v-model:value="model.text"
-          type="text"
+          type="textarea"
           placeholder="请输入内容"
+          :autosize="{
+            minRows: 5,
+          }"
         />
-      </div>
-    </n-card>
-    <n-card title="提交">
-      <div class="btn">
-        <n-button type="primary" @click="onSubmit">提交</n-button>
-      </div>
     </n-card>
   </div>
 </template>
@@ -93,8 +92,8 @@ const onSubmit = async () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 64px;
-  padding: 64px;
+  padding: 24px;
+  gap: 24px;
   .img {
     width: 400px;
     height: 300px;
@@ -106,8 +105,9 @@ const onSubmit = async () => {
     gap: 24px;
   }
   .btn {
+    width: 100%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
   }
 }
 </style>

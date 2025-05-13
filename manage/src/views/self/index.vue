@@ -3,10 +3,9 @@
     <div class="add">
       <n-pagination
         v-model:page="page.current"
-        v-model:page-size="page.pageSize"
-        :page-count="page.total"
+        :item-count="page.total"
         show-size-picker
-        :page-sizes="[10, 20, 30, 50]"
+        :page-sizes="[10, 20, 50, 100]"
         @update:page="updatePage"
         @update:page-size="updatePageSize"
       />
@@ -215,6 +214,7 @@ const action = baseUrl + '/upload'
 const page = ref({
   current: 1,
   pageSize: 10,
+  total: 0,
 })
 
 const userInfo = ref({})
@@ -430,6 +430,7 @@ const getSelfData = async () => {
           content: item.content ? item.content.split(',') : [],
         }
       })
+      page.value = res.data.page
     } else {
       message.error('获取失败')
     }

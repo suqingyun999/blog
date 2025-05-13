@@ -10,10 +10,10 @@
     </div>
     <div class="page page-s page-m page-l">
       <n-pagination
-        v-if="list.length"
         v-model:page="page.current"
         show-size-picker
         :page-sizes="[12, 24, 36, 48, 120]"
+        :item-count="page.total"
         @update:page="changePage"
         @update:page-size="changePageSize"
       />
@@ -43,8 +43,7 @@ const getListData = async () => {
     },
   })
   if (res.status == '1') {
-    console.log(res.data.data)
-
+    page.value = res.data.page
     list.value = res.data.data
   }
 }
