@@ -14,8 +14,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/blog': {
-        // target: 'http://localhost:3000',
-        target: 'http://47.122.74.160:3000',
+        target: 'http://localhost:3000',
+        // target: 'http://47.122.74.160:3000',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/blog/, ''),
       },

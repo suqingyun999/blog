@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 const db = require("../db/index");
 const dayjs = require("dayjs");
-const { log } = require("debug/src/browser");
 
 // 根据token获取当前登录的用户名
 function getCurrentUser(auth) {
@@ -175,7 +174,7 @@ const pageMessageList = async (ctx, next) => {
 
     console.log("total", res[0]);
 
-    let sql = `select * from message where is_del='0' order by datetime desc limit ${
+    let sql = `select id,msg,name,color,datetime from message where is_del='0' order by datetime desc limit ${
       (current - 1) * pageSize
     },${pageSize}`;
 

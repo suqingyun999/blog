@@ -17,7 +17,7 @@ const messageList = async (ctx, next) => {
 
   try {
     const res = await db.query(
-      `select count(*) as total from message where is_del=0`
+      `select id as total from message where is_del=0`
     );
     const total = res[0].total; // 总数
     const pageSize = page.pageSize; // 每页条数
@@ -26,15 +26,14 @@ const messageList = async (ctx, next) => {
 
     console.log("total", res[0]);
 
-    let sql = `select * from message where is_del='0' order by datetime desc limit ${
+    let sql = `select id,msg,name,color,datetime from message where is_del=0 order by datetime desc limit ${
       (current - 1) * pageSize
     },${pageSize}`;
 
     console.log(sql);
 
+    
     const result = await db.query(sql);
-
-    console.log(result);
 
     if (result) {
       ctx.body = {

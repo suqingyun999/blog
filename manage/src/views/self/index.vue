@@ -486,6 +486,9 @@ getSelfData()
       color: #7d90a9;
       font-weight: 600;
     }
+    .text {
+      white-space: pre;
+    }
   }
 
   .card-body {

@@ -60,6 +60,25 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
 });
 
+// token
+app.use(
+  koajwt({
+    // 加密的密钥
+    secret: "blog-token",
+  }).unless({
+    // 不需要验证的路由
+    path: [
+      /^\/users\/login/,
+      /^\/upload/,
+      /^\/public/,
+      /^\/images/,
+      /^\/page/,
+      /^\/self/,
+      /\/users\/userInfo/,
+    ],
+  })
+);
+
 // routes 路由
 app.use(users.routes(), users.allowedMethods());
 app.use(content.routes(), content.allowedMethods());
@@ -77,24 +96,6 @@ app.use(
 );
 
 app.use(upload.routes(), upload.allowedMethods());
-
-// token
-app.use(
-  koajwt({
-    // 加密的密钥
-    secret: "blog-token",
-  }).unless({
-    // 不需要验证的路由
-    path: [
-      /^\/users\/login/,
-      // /^\/users\/reg/,
-      /^\/upload/,
-      /^\/public/,
-      /^\/images/,
-      /^\/page/,
-    ],
-  })
-);
 
 // error-handling
 app.on("error", (err, ctx) => {

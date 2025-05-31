@@ -99,7 +99,7 @@
   </div>
 </template>
   
-  <script setup>
+<script setup>
 import { ref, computed } from 'vue'
 import { useMessage } from 'naive-ui'
 import {
@@ -108,10 +108,8 @@ import {
   commentadd,
   getCommentById,
 } from '../../api/index.js'
-import dayjs from 'dayjs'
 const message = useMessage()
 const baseUrl = import.meta.env.VITE_APP_BASE_API
-const action = baseUrl + '/upload'
 
 const page = ref({
   current: 1,
@@ -255,6 +253,9 @@ getSelfData(page.value)
       background-color: #888;
       margin-right: 8px;
     }
+    .wrap {
+      width: 100%;
+    }
     .name {
       color: #7d90a9;
       font-weight: 600;
@@ -262,6 +263,7 @@ getSelfData(page.value)
     }
     .text {
       font-size: 16px;
+      white-space: pre-wrap;
     }
   }
 

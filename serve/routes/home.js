@@ -1,11 +1,7 @@
 const router = require("koa-router")();
 const {
-  homeList,
-  homeAdd,
   homeDetail,
   homeUpdate,
-  homeDel,
-  homeChangeStatus,
 } = require("../controller/home");
 
 router.prefix("/home");

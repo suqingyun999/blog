@@ -102,6 +102,8 @@ export function commentDel(id) {
   })
 }
 
+
+// 获取指定朋友圈评论
 export function getCommentById(id) {
   return request({
     url: `/self/getCommentById?id=` + id,

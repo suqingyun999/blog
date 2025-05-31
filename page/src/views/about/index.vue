@@ -64,8 +64,11 @@ const getUserInfoData = async () => {
 const getAboutDetail = async () => {
   try {
     const res = await getAbout()
-    console.log(res)
-    model.value = res.data
+    if (res.status == '1') {
+      model.value = res.data
+    } else {
+      message.error('获取失败')
+    }
   } catch (error) {
     message.error(error.message)
   }
