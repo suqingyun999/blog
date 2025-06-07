@@ -70,6 +70,7 @@ app.use(
     path: [
       /^\/users\/login/,
       /^\/upload/,
+       /^\/uploads/,
       /^\/public/,
       /^\/images/,
       /^\/page/,

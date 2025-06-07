@@ -16,7 +16,17 @@
               </div>
             </div>
           </div>
-          <div class="card-body">
+          <div
+            class="card-body"
+            :style="{
+              'grid-template-rows': `repeat(${Math.ceil(
+                item.content.length / 3,
+              )}, 1fr)`,
+              'grid-template-columns': `repeat(${
+                item.content.length == 1 ? 1 : 3
+              }, 1fr)`,
+            }"
+          >
             <video
               v-if="item.type == 3"
               :src="baseUrl + item.content[0]"
@@ -30,7 +40,6 @@
                   item.content.length > 1 ? 'multi-image' : 'single-image'
                 "
                 :key="j"
-                :object-fit="image.length == 1 ? 'fill' : 'cover'"
                 :src="baseUrl + image"
                 :img-props="{
                   width: '100%',
@@ -247,8 +256,8 @@ getSelfData(page.value)
   .card-head {
     display: flex;
     .avatar {
-      width: 32px;
-      height: 32px;
+      width: 48px;
+      height: 48px;
       border-radius: 6px;
       background-color: #888;
       margin-right: 8px;
@@ -269,23 +278,24 @@ getSelfData(page.value)
 
   .card-body {
     margin-top: 4px;
-    padding-left: 40px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
+    padding-left: 56px;
+    // display: flex;
+    // flex-wrap: wrap;
+    // gap: 5px;
+    display: grid;
+    gap: 8px;
     .multi-image {
-      width: 90px;
-      height: 90px;
+      aspect-ratio: 1/1;
     }
     .single-image {
-      width: 220px;
+      width: 50%;
     }
   }
 
   .operate-wrap {
     margin: 8px 0;
     height: 32px;
-    padding-left: 40px;
+    padding-left: 56px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -299,8 +309,8 @@ getSelfData(page.value)
     }
   }
   .comments-area {
-    margin-left: 40px;
-    padding: 8px;
+    margin-left: 56px;
+    padding: 6px;
     background-color: #f8f8f8;
   }
   .comments-input {
@@ -332,8 +342,8 @@ getSelfData(page.value)
       padding-left: 72px;
       width: 100%;
       .multi-image {
-        width: 222px;
-        height: 222px;
+        // width: 222px;
+        // height: 222px;
       }
     }
     .operate-wrap {

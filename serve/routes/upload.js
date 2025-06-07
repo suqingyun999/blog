@@ -1,9 +1,10 @@
-const router = require('koa-router')();
-const path = require('path');
-const fs = require('fs');
-const jwt = require('jsonwebtoken');
+const router = require("koa-router")();
+const path = require("path");
+const fs = require("fs");
+const jwt = require("jsonwebtoken");
+const { log } = require("console");
 
-router.post('/upload', async (ctx, next) => {
+router.post("/upload", async (ctx, next) => {
   try {
     const file = ctx.request.files.file; // 获取上传文件
     const {
@@ -13,10 +14,10 @@ router.post('/upload', async (ctx, next) => {
       mimetype: type,
     } = ctx.request.files.file;
 
-    console.log('file', file);
+    console.log("file", file);
 
     const reader = fs.createReadStream(filePath); // 创建可读流
-    const ext = name.split('.').pop(); // 获取上传文件扩展名
+    const ext = name.split(".").pop(); // 获取上传文件扩展名
     const file_path = `/images/${Date.now()}_${name}`;
     const upStream = fs.createWriteStream(`public` + file_path); // 创建可写流
     reader.pipe(upStream); // 可读流通过管道写入可写流
@@ -29,7 +30,72 @@ router.post('/upload', async (ctx, next) => {
     };
   } catch (error) {
     ctx.body = {
-      status: '0',
+      status: "0",
+      message: error.message,
+    };
+  }
+});
+
+// 多文件同时上传
+router.post("/uploads", async (ctx, next) => {
+  try {
+    log("files", ctx.request.files);
+    const files = ctx.request.files.file; // 获取上传文件
+
+    const resData = [];
+    if (Array.isArray(files)) {
+      files.forEach((file) => {
+        const {
+          originalFilename: name,
+          filepath: filePath,
+          size,
+          mimetype: type,
+        } = file;
+
+        console.log("file", file);
+
+        const reader = fs.createReadStream(filePath); // 创建可读流
+        const ext = name.split(".").pop(); // 获取上传文件扩展名
+        const file_path = `/images/${Date.now()}_${name}`;
+        const upStream = fs.createWriteStream(`public` + file_path); // 创建可写流
+        reader.pipe(upStream); // 可读流通过管道写入可写流
+        resData.push({
+          name, // 文件名称
+          path: file_path, // 临时路径
+          size, // 文件大小
+          type, // 文件类型
+        });
+      });
+    } else {
+      const file = ctx.request.files.file; // 获取上传文件
+      const {
+        originalFilename: name,
+        filepath: filePath,
+        size,
+        mimetype: type,
+      } = ctx.request.files.file;
+
+      console.log("file", file);
+
+      const reader = fs.createReadStream(filePath); // 创建可读流
+      const ext = name.split(".").pop(); // 获取上传文件扩展名
+      const file_path = `/images/${Date.now()}_${name}`;
+      const upStream = fs.createWriteStream(`public` + file_path); // 创建可写流
+      reader.pipe(upStream); // 可读流通过管道写入可写流
+      resData.push({
+        name, // 文件名称
+        path: file_path, // 临时路径
+        size, // 文件大小
+        type, // 文件类型
+      });
+    }
+
+    ctx.body = {
+      resData,
+    };
+  } catch (error) {
+    ctx.body = {
+      status: "0",
       message: error.message,
     };
   }
@@ -37,8 +103,8 @@ router.post('/upload', async (ctx, next) => {
 
 // 根据token获取当前登录的用户名
 function getCurrentUser(auth) {
-  auth = auth.replace('Bearer ', '');
-  return jwt.verify(auth, 'feiyan-token');
+  auth = auth.replace("Bearer ", "");
+  return jwt.verify(auth, "feiyan-token");
 }
 
 module.exports = router;
