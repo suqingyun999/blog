@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 const db = require("../db/index");
 const dayjs = require("dayjs");
-const { log } = require("debug/src/browser");
 // 根据token获取当前登录的用户名
 function getCurrentUser(auth) {
   auth = auth.replace("Bearer ", "");

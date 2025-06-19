@@ -279,9 +279,6 @@ getSelfData(page.value)
   .card-body {
     margin-top: 4px;
     padding-left: 56px;
-    // display: flex;
-    // flex-wrap: wrap;
-    // gap: 5px;
     display: grid;
     gap: 8px;
     .multi-image {
@@ -314,7 +311,7 @@ getSelfData(page.value)
     background-color: #f8f8f8;
   }
   .comments-input {
-    margin-left: 40px;
+    margin-left: 56px;
     padding: 8px 8px 16px;
     background-color: #f8f8f8;
   }
@@ -341,10 +338,6 @@ getSelfData(page.value)
       margin-top: 4px;
       padding-left: 72px;
       width: 100%;
-      .multi-image {
-        // width: 222px;
-        // height: 222px;
-      }
     }
     .operate-wrap {
       padding-left: 72px;
